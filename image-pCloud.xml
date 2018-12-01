@@ -80,7 +80,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     // set the text under to the placeholder div
     var dest = document.getElementById('dest');
     dest.innerHTML = '';
-    dest.appendChild(image);
+    dest.appendChild(img);
     
     if (prefs.getString('under') !== '') {
       var div = document.createElement('div');
