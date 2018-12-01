@@ -62,11 +62,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
       }
     }
     
-    var image = document.createElement('img');
-    if (prefs.getString('alt') != '') image.setAttribute('alt', prefs.getString('alt'));
-    if (prefs.getString('title') != '') image.setAttribute('title', prefs.getString('title'));
-    image.setAttribute('width', width + 'px');
-    image.setAttribute('frameborder','no');
+    var img = document.createElement('img');
+    if (prefs.getString('alt') != '') img.setAttribute('alt', prefs.getString('alt'));
+    if (prefs.getString('title') != '') img.setAttribute('title', prefs.getString('title'));
+    img.setAttribute('width', width + 'px');
+    img.setAttribute('frameborder','no');
     if (imageURL.slice(0,4)=="http") {
       var imageURL = '';
     } else {
@@ -75,9 +75,9 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
                      '&linkpassword=undefined&size='
                      +width+'x600&type=auto';
     }
-    image.setAttribute('src', imageURL);
+    img.setAttribute('src', imageURL);
 
-    // set the slideshow to the placeholder div
+    // set the text under to the placeholder div
     var dest = document.getElementById('dest');
     dest.innerHTML = '';
     dest.appendChild(image);
