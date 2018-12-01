@@ -40,7 +40,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     <EnumValue value="yes" display_value="Yes"/>
   </UserPref>
   <Content type="html" view="default,canvas"><![CDATA[
-  <div id='dest'><img src="https://www.google.com/ig/images/spinner.gif"></div>
+  <div id='dest'><img src="https://ssl.gstatic.com/docs/picker/images/loading-32-v1.gif"></div>
   <script type="text/javascript">
   gadgets.util.registerOnLoadHandler(doRender);
 
@@ -49,8 +49,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     var prefs = new gadgets.Prefs();
     var image = prefs.getString('image');
     var scroll = prefs.getString('scroll');
-//    var height = 600;
-//    var width = 800;
+    var height = 600;
+    var width = 800;
 
     if (gadgets.window) {
       var viewport = gadgets.window.getViewportDimensions();
@@ -63,11 +63,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     }
     
     var img = document.createElement('img');
-    if (prefs.getString('alt') != '') img.setAttribute('alt', prefs.getString('alt'));
-    if (prefs.getString('title') != '') img.setAttribute('title', prefs.getString('title'));
+    if (prefs.getString('alt') !== '') img.setAttribute('alt', prefs.getString('alt'));
+    if (prefs.getString('title') !== '') img.setAttribute('title', prefs.getString('title'));
     img.setAttribute('width', width + 'px');
     img.setAttribute('frameborder','no');
-    if (imageURL.slice(0,4)=="http") {
+    if (image.slice(0,4)=="http") {
       var imageURL = '';
     } else {
       var imageURL = 'https://api.pcloud.com/getpubthumb?code='+
@@ -82,7 +82,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     dest.innerHTML = '';
     dest.appendChild(image);
     
-    if (prefs.getString('under') != '') {
+    if (prefs.getString('under') !== '') {
       var div = document.createElement('div');
       if (prefs.getString('underalign') != 'auto') {
         div.setAttribute('align', prefs.getString('underalign'))
