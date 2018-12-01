@@ -19,8 +19,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 <Module>
   <ModulePrefs title="Image from Zonerama" title_url="http://sites.google.com/"
           description="Include image from Zonerama in your Google Site"
-          thumbnail=""
-          screenshot=""
+          thumbnail="https://www.zonerama.com/Content/img/znrm-icon.png"
+          screenshot="https://github.com/vlna/gadgets-4-google-sites/raw/master/image-Zonerama.png"
           height="600" width="800" author="Vladimir Navrat">
     <Require feature="dynamic-height"/>
   </ModulePrefs>
