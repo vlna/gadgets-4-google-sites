@@ -70,7 +70,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     if (image.slice(0,4)=="http") {
       var imageURL = '';
     } else {
-      var imageURL = 'https://www.zonerama.com/photos/127022307_'+width+'x'+height+'.jpg';
+      var imageURL = 'https://www.zonerama.com/photos/'+image+'_'+width+'x'+height+'.jpg';
     }
     img.setAttribute('src', imageURL);
 
