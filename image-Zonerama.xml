@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+Copyright (c) 2018, Vladimir Navrat
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+-->
+<Module>
+  <ModulePrefs title="Image from Zonerama" title_url="http://sites.google.com/"
+          description="Include image from Zonerama in your Google Site"
+          thumbnail=""
+          screenshot=""
+          height="600" width="800" author="Vladimir Navrat">
+    <Require feature="dynamic-height"/>
+  </ModulePrefs>
+  <UserPref name="image" display_name="Number of image" required="true"/>
+  <UserPref name="alt" display_name="Image alt text (alt)" required="false"/>
+  <UserPref name="title" display_name="Image tooltip (title)" required="false"/>
+  <UserPref name="under" display_name="Text under image" required="false"/>
+  <UserPref name="underalign" display_name="Text under image alignment" default_value="auto" datatype="enum">
+    <EnumValue value="auto" display_value="Automatic"/>
+    <EnumValue value="left" display_value="Left"/>
+    <EnumValue value="center" display_value="Center"/>
+    <EnumValue value="right" display_value="Right"/>
+  </UserPref>
+  <UserPref name="scroll" display_name="Display scrollbar" default_value="auto" datatype="enum">
+    <EnumValue value="auto" display_value="Automatic"/>
+    <EnumValue value="no" display_value="No"/>
+    <EnumValue value="yes" display_value="Yes"/>
+  </UserPref>
+  <Content type="html" view="default,canvas"><![CDATA[
+  <div id='dest'><img src="https://ssl.gstatic.com/docs/picker/images/loading-32-v1.gif"></div>
+  <script type="text/javascript">
+  gadgets.util.registerOnLoadHandler(doRender);
+
+  function doRender(){
+    // setup variables
+    var prefs = new gadgets.Prefs();
+    var image = prefs.getString('image');
+    var scroll = prefs.getString('scroll');
+    var height = 600;
+    var width = 800;
+
+    if (gadgets.window) {
+      var viewport = gadgets.window.getViewportDimensions();
+      if (viewport.width) {
+        var width = viewport.width;
+      }
+      if (viewport.height) {
+        var height = viewport.height;
+      }
+    }
+    
+    var img = document.createElement('img');
+    if (prefs.getString('alt') !== '') img.setAttribute('alt', prefs.getString('alt'));
+    if (prefs.getString('title') !== '') img.setAttribute('title', prefs.getString('title'));
+    img.setAttribute('width', width + 'px');
+    img.setAttribute('frameborder','no');
+    if (image.slice(0,4)=="http") {
+      var imageURL = '';
+    } else {
+      var imageURL = 'https://www.zonerama.com/photos/127022307_'+width+'x''+height+'.jpg';
+    }
+    img.setAttribute('src', imageURL);
+
+    // set the text under to the placeholder div
+    var dest = document.getElementById('dest');
+    dest.innerHTML = '';
+    dest.appendChild(img);
+    
+    if (prefs.getString('under') !== '') {
+      var div = document.createElement('div');
+      if (prefs.getString('underalign') != 'auto') {
+        div.setAttribute('align', prefs.getString('underalign'))
+        }
+      div.innerHTML = prefs.getString('under');
+      dest.appendChild(div);
+    }
+  }
+  </script>
+  ]]>
+  </Content>
+</Module>
