@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
 Copyright (c) 2018, Vladimir Navrat
@@ -17,27 +17,46 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 -->
 <Module>
-  <ModulePrefs title="Image from Zonerama" title_url="http://sites.google.com/"
-          description="Include image from Zonerama in your Google Site"
-          thumbnail="https://www.zonerama.com/Content/img/znrm-icon.png"
-          screenshot="https://github.com/vlna/gadgets-4-google-sites/raw/master/image-Zonerama.png"
-          height="600" width="800" author="Vladimir Navrat">
+  <ModulePrefs title="Image from Zonerama" title_url="http://sites.google.com/" description="Include image from Zonerama in your Google Site" thumbnail="https://www.zonerama.com/Content/img/znrm-icon.png" screenshot="https://github.com/vlna/gadgets-4-google-sites/raw/master/image-Zonerama.png" height="600" width="800" author="Vladimir Navrat">
     <Require feature="dynamic-height"/>
   </ModulePrefs>
   <UserPref name="image" display_name="Number of image" required="true"/>
   <UserPref name="alt" display_name="Image alt text (alt)" required="false"/>
   <UserPref name="title" display_name="Image tooltip (title)" required="false"/>
+  <UserPref name="bordertop" display_name="Image top border px width" default_value="none" datatype="enum">
+    <EnumValue value="0" display_value="None"/>
+    <EnumValue value="2" display_value="2px"/>
+    <EnumValue value="4" display_value="4px"/>
+    <EnumValue value="6" display_value="6px"/>
+    <EnumValue value="8" display_value="8px"/>
+    <EnumValue value="10" display_value="10px"/>
+  </UserPref>
+  <UserPref name="borderlr" display_name="Image left/right border px width" default_value="none" datatype="enum">
+    <EnumValue value="0" display_value="None"/>
+    <EnumValue value="2" display_value="2px"/>
+    <EnumValue value="4" display_value="4px"/>
+    <EnumValue value="6" display_value="6px"/>
+    <EnumValue value="8" display_value="8px"/>
+    <EnumValue value="10" display_value="10px"/>
+  </UserPref>
+  <UserPref name="borderbottom" display_name="Image bottom border px width" default_value="none" datatype="enum">
+    <EnumValue value="0" display_value="None"/>
+    <EnumValue value="2" display_value="2px"/>
+    <EnumValue value="4" display_value="4px"/>
+    <EnumValue value="6" display_value="6px"/>
+    <EnumValue value="8" display_value="8px"/>
+    <EnumValue value="10" display_value="10px"/>
+  </UserPref>
   <UserPref name="under" display_name="Text under image" required="false"/>
-  <UserPref name="underalign" display_name="Text under image alignment" default_value="auto" datatype="enum">
-    <EnumValue value="auto" display_value="Automatic"/>
+  <UserPref name="underalign" display_name="Text under image alignment" default_value="none" datatype="enum">
+    <EnumValue value="none" display_value="None"/>
     <EnumValue value="left" display_value="Left"/>
     <EnumValue value="center" display_value="Center"/>
     <EnumValue value="right" display_value="Right"/>
   </UserPref>
-  <UserPref name="scroll" display_name="Display scrollbar" default_value="auto" datatype="enum">
+  <UserPref name="adjustheight" display_name="Adjust height" default_value="auto" datatype="enum">
     <EnumValue value="auto" display_value="Automatic"/>
-    <EnumValue value="no" display_value="No"/>
-    <EnumValue value="yes" display_value="Yes"/>
+    <EnumValue value="none" display_value="None"/>
   </UserPref>
   <Content type="html" view="default,canvas"><![CDATA[
   <div id='dest'><img src="https://ssl.gstatic.com/docs/picker/images/loading-32-v1.gif"></div>
@@ -48,7 +67,11 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
     // setup variables
     var prefs = new gadgets.Prefs();
     var image = prefs.getString('image');
-    var scroll = prefs.getString('scroll');
+
+    var borderlr = prefs.getString('borderlr');
+    var bordertop = prefs.getString('bordertop');
+    var borderbottom = prefs.getString('borderbottom');
+
     var height = 600;
     var width = 800;
 
@@ -61,27 +84,33 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
         var height = viewport.height;
       }
     }
-    
+
     var img = document.createElement('img');
-    if (prefs.getString('alt') !== '') img.setAttribute('alt', prefs.getString('alt'));
-    if (prefs.getString('title') !== '') img.setAttribute('title', prefs.getString('title'));
-    img.setAttribute('width', width + 'px');
+    if (prefs.getString('alt') !== '')
+      img.setAttribute('alt', prefs.getString('alt'));
+    if (prefs.getString('title') !== '')
+      img.setAttribute('title', prefs.getString('title'));
+    img.setAttribute('width', (width-2*borderlr) + 'px');
     img.setAttribute('frameborder','no');
-    if (image.slice(0,4)=="http") {
-      var imageURL = '';
-    } else {
-      var imageURL = 'https://www.zonerama.com/photos/'+image+'_'+width+'x'+height+'.jpg';
-    }
+    img.style.marginLeft = borderlr+'px';
+    img.style.marginRight = borderlr+'px';
+    img.style.marginTop = bordertop+'px';
+    img.style.marginBottom = borderbottom+'px';
+    var imageURL = 'https://www.zonerama.com/photos/'+image+'_'+(width-2*borderlr)+'x'+height+'.jpg';
     img.setAttribute('src', imageURL);
+
+    if (prefs.getString('adjustheight') == 'auto')
+      img.addEventListener('load', function() { gadgets.window.adjustHeight(); }, false);
 
     // set the text under to the placeholder div
     var dest = document.getElementById('dest');
     dest.innerHTML = '';
     dest.appendChild(img);
-    
+
     if (prefs.getString('under') !== '') {
       var div = document.createElement('div');
-      if (prefs.getString('underalign') != 'auto') {
+//      div.style.marginTop = '10px';
+      if (prefs.getString('underalign') !== 'none') {
         div.setAttribute('align', prefs.getString('underalign'))
         }
       div.innerHTML = prefs.getString('under');
